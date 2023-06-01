@@ -1,0 +1,30 @@
+
+
+
+
+async def handle_client(reader, writer):
+    intro_message = "Hello! Please enter the password to connect the server\n"
+    await send_message(writer,intro_message)
+
+    count = 0
+    while(count < 3):
+        password = await receive_message(reader)
+        print("received: " +  password)
+        if password == correct_password:
+            await send_message(writer, "Sucessfully login.....")
+            break
+        else:
+            await send_message(writer, "Incorrect password.....")
+            count += 1
+    
+    if count >= 3:
+        await send_message(writer, "Maximum number of attempts reached. Closing the server...")
+        writer.close()
+        await writer.wait_closed()
+
+
+
+
+
+    writer.close()
+    await writer.wait_closed()
